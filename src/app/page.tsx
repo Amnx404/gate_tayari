@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth } from "~/server/auth";
+import { Button } from "~/components/ui/button";
 import GoogleSignInButton from "~/app/_components/GoogleSignInButton";
 
 
@@ -13,29 +14,22 @@ export default async function Home() {
           Brackets
         </h1>
         <h2 className="text-2xl text-gray-700">
-          Log in
+          Hello and welcome to Brackets!
+          Click here to get started.
         </h2>
-        
-        <div className="w-full space-y-4">
-          <GoogleSignInButton />
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">or</span>
-            </div>
-          </div>
-
-          <button className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-            Continue with Email
-          </button>
+        <div className="flex gap-4">
+          <Link href="/signup">
+            <Button variant="default">
+              Get Started
+            </Button>
+          </Link>
+          <Link href="/signin">
+            <Button variant="secondary">
+              Login
+            </Button>
+          </Link>
         </div>
-
-        <p className="text-sm text-gray-600">
-          Don't have an account? <Link href="/signup" className="text-blue-600 hover:underline">Signup</Link>
-        </p>
+        
       </div>
     </main>
   );

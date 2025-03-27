@@ -33,7 +33,7 @@ declare module "next-auth" {
  */
 export const authConfig = {
   // Enable CSRF protection for authentication routes
-  secret: env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || env.AUTH_SECRET,
   providers: [
     Google({
       clientId: env.AUTH_GOOGLE_ID,

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { auth } from "~/server/auth";
 import GoogleSignInButton from "~/app/_components/GoogleSignInButton";
-export default async function SignUp() {
-  const session = await auth();
 
+
+export default async function SignIn() {
+  const session = await auth();
+  
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white">
       <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 max-w-md">
@@ -11,11 +13,11 @@ export default async function SignUp() {
           Brackets
         </h1>
         <h2 className="text-2xl text-gray-700">
-          Create an account
+          Log in
         </h2>
         
         <div className="w-full space-y-4">
-            <GoogleSignInButton />
+          <GoogleSignInButton />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -32,7 +34,7 @@ export default async function SignUp() {
         </div>
 
         <p className="text-sm text-gray-600">
-          Have an account already? <Link href="/signin" className="text-blue-600 hover:underline">Login</Link>
+          Don't have an account? <Link href="/signup" className="text-blue-600 hover:underline">Signup</Link>
         </p>
       </div>
     </main>

@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { auth } from "~/server/auth";
 import GoogleSignInButton from "~/app/_components/GoogleSignInButton";
-
-
-export default async function Home() {
+export default async function SignUp() {
   const session = await auth();
 
   return (
@@ -13,11 +11,11 @@ export default async function Home() {
           Brackets
         </h1>
         <h2 className="text-2xl text-gray-700">
-          Log in
+          Create an account
         </h2>
         
         <div className="w-full space-y-4">
-          <GoogleSignInButton />
+            <GoogleSignInButton />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -34,7 +32,7 @@ export default async function Home() {
         </div>
 
         <p className="text-sm text-gray-600">
-          Don't have an account? <Link href="/signup" className="text-blue-600 hover:underline">Signup</Link>
+          Have an account already? <Link href="/" className="text-blue-600 hover:underline">Login</Link>
         </p>
       </div>
     </main>

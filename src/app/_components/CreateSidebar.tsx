@@ -45,20 +45,6 @@ export default function CreatorSidebar({ user, statsData }: CreatorSidebarProps)
           </div>
         </div>
         <nav className="mt-4 space-y-1">
-          <Link href="/creatordashboard/dashboard">
-            <div className={`flex items-center space-x-2 px-3 py-2 rounded-md ${
-              pathname === "/creatordashboard/dashboard" 
-                ? "bg-blue-50 text-blue-700" 
-                : "text-neutral-700 hover:bg-neutral-100"
-            }`}>
-              <LayoutDashboard className="h-4 w-4" />
-              <span>Dashboard</span>
-            </div>
-          </Link>
-          <div className="flex items-center space-x-2 px-3 py-2 rounded-md text-neutral-700 hover:bg-neutral-100">
-            <FileText className="h-4 w-4" />
-            <span>Question Banks</span>
-          </div>
           <div className="flex items-center space-x-2 px-3 py-2 rounded-md text-neutral-700 hover:bg-neutral-100">
             <Settings className="h-4 w-4" />
             <span>Settings</span>

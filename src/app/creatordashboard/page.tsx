@@ -1,7 +1,7 @@
 import { auth } from "~/server/auth";
 import CreatorSidebar from "~/app/_components/CreateSidebar";
 import Header from "~/app/Header";
-
+import QuestionBanksList from "../_components/QuestionBankList";
 export default async function CreatorDashboard() {
     const session = await auth();
 
@@ -29,10 +29,7 @@ export default async function CreatorDashboard() {
                         user={session.user} 
                         statsData={statsData}
                     />
-                    <div className="flex-1 bg-white rounded-lg shadow p-6">
-                        <h2 className="text-xl font-semibold mb-4">Welcome to your Creator Dashboard</h2>
-                        <p>Start creating and managing your question banks here.</p>
-                    </div>
+                    <QuestionBanksList />
                 </div>
             </div>
         </div>

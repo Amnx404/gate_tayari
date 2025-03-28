@@ -8,10 +8,27 @@ export const questionBankRouter = createTRPCRouter({
       description: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
-      // TODO: Implement question bank creation in database
-      return {
-        success: true,
-        message: "Question bank created successfully",
-      };
+      return ctx.db.questionBank.create({
+        data: {
+          name: input.title,
+          description: input.description,
+          createdBy: { connect: { id: ctx.session.user.id } },
+        },
+      });
+    }),
+
+  getAll: protectedProcedure
+    .query(async ({ ctx }) => {
+      return ctx.db.questionBank.findMany({
+        where: {
+          createdById: ctx.session.user.id,
+        },
+        include: {
+          questions: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
     }),
 });

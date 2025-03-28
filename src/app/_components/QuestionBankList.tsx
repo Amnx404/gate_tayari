@@ -20,23 +20,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { api } from "~/trpc/react";
+import type { QuestionBankStatus } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 export default function QuestionBanksList() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  
-  // Temporary mock data
-  const questionBanks = [
-    { id: 1, title: "Sample Question Bank 1", status: "draft", questionCount: 10 },
-    { id: 2, title: "Sample Question Bank 2", status: "published", questionCount: 15 },
-  ];
-  
-  const filteredQuestionBanks = questionBanks.filter(bank => {
+  const [statusFilter, setStatusFilter] = useState<QuestionBankStatus | "all">("all");
+
+  const { data: questionBanks, isLoading } = api.questionBank.getAll.useQuery();
+
+  const filteredQuestionBanks = (questionBanks ?? []).filter(bank => {
     let matchesSearch = true;
     let matchesStatus = true;
     
     if (search) {
-      matchesSearch = bank.title.toLowerCase().includes(search.toLowerCase());
+      matchesSearch = bank.name.toLowerCase().includes(search.toLowerCase());
     }
     
     if (statusFilter !== "all") {
@@ -54,7 +54,7 @@ export default function QuestionBanksList() {
           <p className="text-neutral-600">Manage your existing question banks or create new ones</p>
         </div>
         <Button variant="secondary" className="flex items-center" asChild>
-          <Link href="/creator/question-bank/new">
+          <Link href="/creatordashboard/create">
             <span className="flex items-center">+ New Question Bank</span>
           </Link>
         </Button>
@@ -73,8 +73,10 @@ export default function QuestionBanksList() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="published">Published</SelectItem>
+            <SelectItem value="DRAFT">Draft</SelectItem>
+            <SelectItem value="PENDING">Pending</SelectItem>
+            <SelectItem value="PUBLISHED">Published</SelectItem>
+            <SelectItem value="DECLINED">Declined</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -84,13 +86,17 @@ export default function QuestionBanksList() {
           <Card key={bank.id} className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-medium">{bank.title}</h3>
+                <h3 className="font-medium">{bank.name}</h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant={bank.status === 'published' ? 'default' : 'secondary'}>
-                    {bank.status}
+                  <Badge 
+                    variant={bank.status === 'PUBLISHED' ? 'default' : 
+                            bank.status === 'PENDING' ? 'warning' : 
+                            bank.status === 'DECLINED' ? 'destructive' : 'secondary'}
+                  >
+                    {bank.status.toLowerCase()}
                   </Badge>
                   <span className="text-sm text-neutral-500">
-                    {bank.questionCount} questions
+                    {bank.questions.length} questions
                   </span>
                 </div>
               </div>

@@ -60,6 +60,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    questionBanks QuestionBank[]
 }
 
 model VerificationToken {
@@ -69,3 +70,53 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+enum QuestionBankStatus {
+    DRAFT
+    PENDING
+    PUBLISHED
+    DECLINED
+}
+
+model QuestionBank {
+    id          String     @id @default(cuid())
+    name        String
+    description String?
+    status      QuestionBankStatus @default(DRAFT)
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    questions   Question[]
+    createdBy   User       @relation(fields: [createdById], references: [id])
+    createdById String
+
+    @@index([name])
+    @@index([status])
+}
+
+model Question {
+    id            String       @id @default(cuid())
+    text          String
+    optionA       String
+    optionB       String
+    optionC       String
+    optionD       String
+    correctOption String
+    explanation   String?
+    attachmentUrl String?
+    difficulty    String       @default("medium") // easy, medium, hard
+    topic         String?
+    tags          String[]     @default([])      // Array of tags for better organization
+    timeLimit     Int?         // Time limit in seconds
+    usageCount    Int          @default(0)       // Track how many times this question is used
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @updatedAt
+    questionBank  QuestionBank @relation(fields: [bankId], references: [id])
+    bankId        String
+
+    @@index([bankId])
+    @@index([difficulty])
+    @@index([topic])
+    @@index([usageCount])
+}
+
+

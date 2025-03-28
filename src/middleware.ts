@@ -19,8 +19,10 @@ export async function middleware(request: NextRequest) {
   // This is the recommended way to verify auth in middleware
   const token = await getToken({ 
     req: request, 
-    secret: process.env.NEXTAUTH_SECRET || env.AUTH_SECRET 
+    secret: process.env.NEXTAUTH_SECRET || env.AUTH_SECRET ,
+    raw: true,
   });
+  console.log("Token in Middleware:", token);
   
   // Redirect logic
   if (isProtectedRoute && !token) {
